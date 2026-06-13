@@ -1,0 +1,38 @@
+---
+title: "My title"
+subtitle: "My subtitle if needed"
+author: 
+  - Jet McCullough
+  - William Chan
+thanks: "Code and data are available at: [https://github.com/jethroid/INF2167-Proposal-Group-2](https://github.com/jethroid/INF2167-Proposal-Group-2)."
+date: June 18, 2026
+date-format: long
+format: pdf
+number-sections: true
+bibliography: proposal_references.bib
+---
+
+```{r}
+#| include: false
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(palmerpenguins)
+```
+
+# Research Questions
+
+
+# Literature Review
+
+
+# Dataset and Methods
+
+
+# Exploratory Data Analysis
+
+
+\newpage
+
+# References
