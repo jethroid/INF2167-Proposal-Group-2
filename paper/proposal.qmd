@@ -18,20 +18,26 @@ bibliography: proposal_references.bib
 #| message: false
 
 library(tidyverse)
-library(palmerpenguins)
 ```
+
+# Context & Literature Review
+
+Local journalism has been consistently declining in Canada. A 2025 report found that 2.5 million Canadians live in areas with almost no local news coverage, and the remaining outlets continue to face the threat of closure [@macdonald2025]. @lindgren2019 argues that local news acts as a "civic watchdog" that helps residents evaluate politicians in their ridings by scrutinizing local candidates and incumbents' records. The demise of local journalism is thus detrimental to the health of democracy in Canada.
+
+The crisis of local news deprivation is not unique to Canada. @haddock2026 found a similar trend in the United States, where the number of counties without local news doubled to more than 200 between 2010 and 2016. The decline is associated with increases in non-violent crime, lower voter turnout, and greater political polarization [@haddock2026], as residents rely more on national media, which tends to be more partisan and less focused on local issues, thereby amplifying ideological divisions and political apathy toward local politics.
+
+Likewise, @moskowitz2021 argues that elections have become more nationalized in the United States as more voters rely on national, partisan media to assess the performance of politicians. Greater local news coverage leads to higher levels of voter knowledge about local incumbents and candidates, allowing voters to make assessments that differ from their "national judgement on the presidential race" in the form of split-ticket voting (p. 126). A similar change in voting behavior is observed in @ellger2024's study of Germany, where the vote share of small parties increases following the closure of local news outlets.
+
+Drafting...
+
 
 # Research Questions
 
-
-# Literature Review
-
+To better understand the relationship between local news and...
 
 # Dataset and Methods
 
-
 # Exploratory Data Analysis
-
 
 \newpage
 
