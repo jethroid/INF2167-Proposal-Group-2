@@ -1,6 +1,5 @@
 ---
-title: "My title"
-subtitle: "My subtitle if needed"
+title: "The Demise of Local Journalism and Democratic Health in Canada"
 author: 
   - Jet McCullough
   - William Chan
