@@ -22,18 +22,29 @@ library(tidyverse)
 
 # Context & Literature Review
 
-Local journalism has been consistently declining in Canada. A 2025 report found that 2.5 million Canadians live in areas with almost no local news coverage, and the remaining outlets continue to face the threat of closure [@macdonald2025]. @lindgren2019 argues that local news acts as a "civic watchdog" that helps residents evaluate politicians in their ridings by scrutinizing local candidates and incumbents' records. The demise of local journalism is thus detrimental to the health of democracy in Canada.
+Local journalism has been consistently declining in Canada. A 2025 report found that 2.5 million Canadians live in areas with almost no local news coverage, and the remaining outlets continue to face the threat of closure [@macdonald2025]. @lindgren2019 argues that local news acts as a "civic watchdog" that helps residents evaluate politicians in their ridings by scrutinizing the records of local candidates and incumbents. The demise of local journalism is thus detrimental to the health of democracy in Canada.
 
-The crisis of local news deprivation is not unique to Canada. @haddock2026 found a similar trend in the United States, where the number of counties without local news doubled to more than 200 between 2010 and 2016. The decline is associated with increases in non-violent crime, lower voter turnout, and greater political polarization [@haddock2026], as residents rely more on national media, which tends to be more partisan and less focused on local issues, thereby amplifying ideological divisions and political apathy toward local politics.
+The crisis of local news deprivation is not unique to Canada. @haddock2026 found a similar trend in the United States, where the number of counties without local news doubled to more than 200 between 2010 and 2016. This decline is associated with increases in non-violent crime, lower voter turnout, and greater political polarization [@haddock2026], as residents rely more heavily on national media, which tends to be more partisan and less focused on local issues, thereby amplifying ideological divisions and political apathy toward local politics.
 
-Likewise, @moskowitz2021 argues that elections have become more nationalized in the United States as more voters rely on national, partisan media to assess the performance of politicians. Greater local news coverage leads to higher levels of voter knowledge about local incumbents and candidates, allowing voters to make assessments that differ from their "national judgement on the presidential race" in the form of split-ticket voting (p. 126). A similar change in voting behavior is observed in @ellger2024's study of Germany, where the vote share of small parties increases following the closure of local news outlets.
+Likewise, @moskowitz2021 argues that elections have become more nationalized in the United States as voters increasingly rely on national, partisan media to assess the performance of politicians. Greater local news coverage leads to higher levels of voter knowledge about local incumbents and candidates, allowing voters to make assessments that differ from their "national judgement on the presidential race" in the form of split-ticket voting (p. 126). @moskowitz2021 posits that highly nationalized elections undermine the accountability of officeholders, as their performance is more likely to be judged by the popularity of their party and president rather than by their competence and service delivery (p. 127).
 
-Drafting...
-
+Echoing @moskowitz2021, @ellger2024 provides evidence from Germany, where they found that the disappearance of local news is correlated with an increase in the vote share of small parties. In the German party system, small parties tend to be further from the ideological center; thus, an increase in their vote shares indicates greater polarization among the electorate (p. 1266).
 
 # Research Questions
 
-To better understand the relationship between local news and...
+Scholarly studies on news deprivation and its political implications mostly focus on the U.S. context, thereby revealing a research gap in the Canadian context. Drawing from existing literature, we propose two research questions:
+
+```         
+RQ1. Do Canadian ridings with lower levels of local news coverage exhibit lower voter turnout in federal and municipal elections than ridings with higher levels of local news coverage?
+
+H1: Ridings that experience a decline in local news coverage will exhibit lower voter turnout in federal and municipal elections, as reduced access to local political information decreases voter knowledge and engagement.
+```
+
+```         
+RQ2. Is the decline of local news in Canada associated with higher levels of political polarization at the riding level?
+
+H2: Ridings that experience a decline in local news coverage will exhibit higher levels of political polarization, as voters increasingly rely on national partisan media and evaluate politics through national rather than local perspectives.
+```
 
 # Dataset and Methods
 
