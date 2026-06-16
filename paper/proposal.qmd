@@ -21,13 +21,13 @@ library(tidyverse)
 
 # Context & Literature Review
 
-Local journalism has been consistently declining in Canada. A 2025 report found that 2.5 million Canadians live in areas with almost no local news coverage, and the remaining outlets continue to face the threat of closure [@macdonald2025]. @lindgren2019 argues that local news acts as a "civic watchdog" that helps residents evaluate politicians in their ridings by scrutinizing the records of local candidates and incumbents. The demise of local journalism is thus detrimental to the health of democracy in Canada.
+Local journalism has been consistently declining in Canada. A 2025 report found that 2.5 million Canadians live in areas with almost no local news coverage, and the remaining outlets continue to face the threat of closure [@macdonald_local_2025]. @lindgren_what_2019 argues that local news acts as a "civic watchdog" that helps residents evaluate politicians in their ridings by scrutinizing the records of local candidates and incumbents. The demise of local journalism is thus detrimental to the health of democracy in Canada.
 
-The crisis of local news deprivation is not unique to Canada. @haddock2026 found a similar trend in the United States, where the number of counties without local news doubled to more than 200 between 2010 and 2016. This decline is associated with increases in non-violent crime, lower voter turnout, and greater political polarization [@haddock2026], as residents rely more heavily on national media, which tends to be more partisan and less focused on local issues, thereby amplifying ideological divisions and political apathy toward local politics.
+The crisis of local news deprivation is not unique to Canada. @haddock_local_2026 found a similar trend in the United States, where the number of counties without local news doubled to more than 200 between 2010 and 2016. This decline is associated with increases in non-violent crime, lower voter turnout, and greater political polarization [@haddock_local_2026], as residents rely more heavily on national media, which tends to be more partisan and less focused on local issues, thereby amplifying ideological divisions and political apathy toward local politics.
 
-Likewise, @moskowitz2021 argues that elections have become more nationalized in the United States as voters increasingly rely on national, partisan media to assess the performance of politicians. Greater local news coverage leads to higher levels of voter knowledge about local incumbents and candidates, allowing voters to make assessments that differ from their "national judgement on the presidential race" in the form of split-ticket voting (p. 126). @moskowitz2021 posits that highly nationalized elections undermine the accountability of officeholders, as their performance is more likely to be judged by the popularity of their party and president rather than by their competence and service delivery (p. 127).
+Likewise, @moskowitz_local_2021 argues that elections have become more nationalized in the United States as voters increasingly rely on national, partisan media to assess the performance of politicians. Greater local news coverage leads to higher levels of voter knowledge about local incumbents and candidates, allowing voters to make assessments that differ from their "national judgement on the presidential race" in the form of split-ticket voting (p. 126). @moskowitz_local_2021 posits that highly nationalized elections undermine the accountability of officeholders, as their performance is more likely to be judged by the popularity of their party and president rather than by their competence and service delivery (p. 127).
 
-Echoing @moskowitz2021, @ellger2024 provides evidence from Germany, where they found that the disappearance of local news is correlated with an increase in the vote share of small parties. In the German party system, small parties tend to be further from the ideological center; thus, an increase in their vote shares indicates greater polarization among the electorate (p. 1266).
+Echoing @moskowitz_local_2021, @ellger_local_2024 provides evidence from Germany, where they found that the disappearance of local news is correlated with an increase in the vote share of small parties. In the German party system, small parties tend to be further from the ideological center; thus, an increase in their vote shares indicates greater polarization among the electorate (p. 1266).
 
 # Research Questions
 
@@ -46,6 +46,10 @@ H2: Ridings that experience a decline in local news coverage will exhibit higher
 ```
 
 # Dataset and Methods
+
+We will be relying on datasets from two sources. One dataset we will be using is from the Local News Map, published by the Local News Research Project (citation). As part of this project, raw data is published every two months with updates on changes to local media outlets, each report ranging from the present day back to 2008 when the project was started. There are three key variables in this dataset for the purposes of answering our research questions. One is "will be transition "transition type": the project maps positive changes (new papers, increases in service) as well as negative, and we will be specifically studying the impact of a reduction in local media. The other two key variables are "date of change" and "community" (i.e. city, town, etc.), which are important as we will be comparing these changes to election results over time and by region.
+
+The other dataset we will be using
 
 # Exploratory Data Analysis
 
