@@ -17,6 +17,7 @@ bibliography: proposal_references.bib
 #| message: false
 
 library(tidyverse)
+library(here)
 ```
 
 # Context & Literature Review
@@ -33,28 +34,30 @@ Echoing @moskowitz_local_2021, @ellger_local_2024 provides evidence from Germany
 
 Scholarly studies on news deprivation and its political implications mostly focus on the U.S. context, thereby revealing a research gap in the Canadian context. Drawing from existing literature, we propose two research questions:
 
-```         
-RQ1. Do Canadian ridings with lower levels of local news coverage exhibit lower voter turnout in federal and municipal elections than ridings with higher levels of local news coverage?
+**RQ1. Do Canadian ridings with lower levels of local news coverage exhibit lower voter turnout in federal and municipal elections than ridings with higher levels of local news coverage?**
 
 H1: Ridings that experience a decline in local news coverage will exhibit lower voter turnout in federal and municipal elections, as reduced access to local political information decreases voter knowledge and engagement.
-```
 
-```         
-RQ2. Is the decline of local news in Canada associated with higher levels of political polarization at the riding level?
+**RQ2. Is the decline of local news in Canada associated with higher levels of political polarization at the riding level?**
 
 H2: Ridings that experience a decline in local news coverage will exhibit higher levels of political polarization, as voters increasingly rely on national partisan media and evaluate politics through national rather than local perspectives.
-```
 
 # Dataset and Methods
 
-We will be relying on datasets from two sources. One is from the @localnews. As part of this project, raw data is published every two months with updates on changes to local media outlets, each report ranging from the present day back to 2008. There are three key variables in this dataset for the purposes of answering our research questions. One is "transition type": the project maps positive changes (new papers, increases in service) as well as negative, and we will be specifically studying the impact of a reduction in local media. The other two key variables are "date of change" and "community" (i.e. city, town, etc.), which will allow us to compare these changes to election results over time and by region.
+We will be relying on datasets from two sources. One is from the @localnews. As part of this project, raw data is published every two months with updates on changes to local media outlets, each report ranging from the present day back to 2008. There are three key variables in this dataset for the purposes of answering our research questions. One is "transition type," as the project maps positive changes (new papers, increases in service) as well as negative. The other two key variables are "date of change" and "community" (i.e. city, town, etc.), which will allow us to compare these changes to election results over time and by region.
 
-The other datasets we will be using are Canadian general election results over the same period (2008-2025), downloaded from @electionscanada. We will be using the official voting results results in what Elections Canada calls "Format 2," or "pollresults_resultatsbureau," which includes each candidate's political party, "Political Affiliation Name_English," and vote counts, "Candidate VoteCount." These variables together allow us to measure the relative prominence of small parties, which we take to be an indicator of left-right polarization. This format also includes the number of electors for each poll, which we will need to calculate turnout, as the ratio of total votes cast to number of electors. Though these data have the disadvantage of being more granular than our local news data (including poll-by-poll data), we choose this format because of the flexibility of having variables separate from one another, such as candidate party and names, and because it includes the number of electors in the same place as the rest of this information. None of the summary tables we looked at from Elections Canada seemed to meet these requirements.
+The other datasets we will be using are Canadian general election results over the same period (2008-2025), downloaded from @electionscanada. We will be using the official voting results results in what Elections Canada calls "Format 2," or "pollresults_resultatsbureau," which includes each candidate's political party, "Political Affiliation Name_English," and vote counts, "Candidate VoteCount." These variables together allow us to measure the relative prominence of small parties, which we take to be an indicator of left-right polarization. This format also includes the number of electors for each poll, which we will need to calculate turnout, as the ratio of total votes cast to number of electors. Though these poll-by-poll data have the disadvantage of being more granular than our local news data, we choose this format because of the flexibility of having variables separate from one another, such as candidate party and names, and because it includes the number of electors in the same place as the rest of this information. None of the summary tables we looked at from Elections Canada seemed to meet these requirements.
 
-Our plan is to first correspond the election ridings to the "communities" identified in the news map, ideally by an automated method. We will then calculate a ratio between a community's population and the number of negative/positive changes over the period between general elections, as an integer value. We will then calculate both the turnout and vote share of small parties in each election, by community. We will calculate the correlation among these three new continuous numeric variables for each election year, and chart and compare their movement over time. 
+Our plan is to first correspond the election ridings to the "communities" identified in the news map. We will then explore methods of comparing local news health and political results, especially in communities most affected by reduction in local news sources. One way is by mathematical correlation: this could perehaps be done by calculating a ratio between a community's population and an integer representing negative/positive changes over the period between general elections, then calculating both the turnout and vote share of small parties in each election, by community. Then we could measure statistical correlation among these three new continuous numeric variables for each election year suing R, and chart and compare their movement over time. Alternatively, we can reduce the scope by zeroing in on some particular communities and attempting to tell their local news stories, drawing parallels to interesting political results, seeing if these data match our hypotheses or not.
 
 # Exploratory Data Analysis
 
+The local news dataset can show (need to cite here package)
+
+```{r}
+news <- read_csv(here("data", "01-raw_data", "news_apr_2026.csv"))
+head(news)
+```
 
 
 \newpage
