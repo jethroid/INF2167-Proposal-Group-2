@@ -1,4 +1,4 @@
-# Starter folder
+# INF2167 Final Project
 
 This repo is for our group project for INF2167. It is a clone of the starter repo from Rohan Alexander (https://github.com/RohanAlexander/starter_folder). The original readme is preserved below.
 
