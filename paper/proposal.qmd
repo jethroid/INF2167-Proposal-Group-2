@@ -57,6 +57,7 @@ Our plan is to first correspond the election ridings to the "communities" identi
 
 news <- read_csv(here("data", "01-raw_data", "proposal_data",  "news_apr_2026.csv")) #opening our datasets
 election2025 <- read_csv(here("data", "01-raw_data", "proposal_data",  "2025polls", "pollresults_resultatsbureau24070.csv")) #Saint-Maurice--Champlain riding
+format2025 <- read_csv(here("data", "01-raw_data", "proposal_data",  "2025pollsformat1", "pollbypoll_bureauparbureau24070.csv")) #alt. format
 ```
 
 Even before we embark on this in-depth statistical work, we can use our datasets to tell us a number of things. Our local news dataset tells us that the majority of changes tracked in Canadian local news are negative, i.e. not new outlets being created.
@@ -72,7 +73,7 @@ news |>
   arrange(desc(Total))
 ```
 
-We can move in a little closer, using visuals to relate the story that our datasets tell us. For example, we can illustrate the number of negative changes (closures, shifts to online, reduction in service, etc.) in local news over time for a particular community.
+We can move in a little closer, using visuals to relate the story that our datasets tell us. For example, we can illustrate the number of negative changes (closures, shifts to online, reduction in service, etc.) in local news over time for a particular community. The following line plot, for example, shows that 2015 and 2019 saw spikes in local news reduction in the city of Toronto, information useful to our examination of the political climate over this period.
 
 ```{r}
 #| echo: false
@@ -86,16 +87,15 @@ torontonews |>
   group_by(date) |> #getting no. of observations per year
   count() |>
   ungroup() |>
-  ggplot(aes(x = date, y = n)) +
-  geom_col(fill = "navy") + #making bar chart, choosing colour
+  ggplot(aes(x = date, y = n)) + #creading line plot, choosing colour
+  geom_line(colour = "navy") + #lineplot, choosing colour
   scale_x_continuous(breaks = scales::pretty_breaks(n=9)) +
-  theme_classic() +
   labs(x = "Year", y = "Number of Negative Changes", 
        title = "Local News Sources Lost or Reduced in Toronto")
   
 ```
 
-With our elections datasets, we can find the vote shares of smaller and fringe parties within a riding, or calculate turnout numbers, and compare them across polls. 
+With our elections datasets, we can find the vote shares of small parties within a riding, or calculate turnout numbers, and compare them across polls. Here I use Elections Canada's Format 1 to compute turnout because it already includes vote totals, though it can be done with Format 2 by summing the candidate vote totals. The histogram below shows the distribution of turnout across polls in a constituency. This visual shows us that turnout numbers between 30 and 50 percent are most typical. It also shows some turnout numbers above 100 percent: filtering the dataset to see what these are shows that it is mostly mobile polls that show vote totals greater than registered electors. That turnout numbers may get murky when including mobile polls is useful information to have for when we calculate turnout by riding for this project.
 
 ```{r}
 #| echo: false
@@ -112,20 +112,29 @@ election2025 |> #vote totals for parties
 
 ```
 
+
+```{r}
+#| echo: false
+#| warning: false
+
+format2025 |>
+  group_by(`Polling Division Number/Numéro de section de vote`) |>
+  mutate(turnout = `Total Votes/Total des votes`/`Electors/Électeurs`) |>
+  ggplot(aes(x = turnout)) +
+  geom_histogram(bins = 60, fill = "purple") +
+  scale_x_log10() +
+  labs(x = "Turnout", 
+       y = "Number of Polls", 
+       title = "Distribution of Turnout in Saint-Maurice--Champlain Riding")
+```
 ```{r}
 #| echo: false
 
-turn <- election2025 |> #turnout by poll: votes/electors
-  filter(`Electors for poll/Électeurs du bureau` != 0) |>
-  group_by(`Polling Division Number/Numéro de section de vote`) |>
-  mutate(t = sum(`Candidate Vote Count/Votes du candidat`)/`Electors for poll/Électeurs du bureau`) |> #calculating turnout
-  select(c(`Polling Division Number/Numéro de section de vote`, t)) |>
-  rename(poll_no = `Polling Division Number/Numéro de section de vote`) |>
-  summarize(turnout = mean(t)) #primitive way of limiting to one row per poll for this example table
-  
-head(turn)
-
+format2025 |>
+  filter(`Total Votes/Total des votes` > `Electors/Électeurs`)|>
+  select(c(`Polling Division Name/Nom de section de vote`, `Total Votes/Total des votes`, `Electors/Électeurs`))
 ```
+
 
 After we have merged all the datasets we want to work with, we will be able to similarly calculate and compare turnout among ridings or cities rather than polls, and over time.
 
