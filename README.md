@@ -1,5 +1,7 @@
 # Starter folder
 
+This repo is for our group project for INF2167. It is a clone of the starter repo from Rohan Alexander (https://github.com/RohanAlexander/starter_folder). The original readme is preserved below.
+
 ## Overview
 
 This repo provides students with a foundation for their own projects associated with *Telling Stories with Data*. You do not need every aspect for every paper and you should delete aspects that you do not need.

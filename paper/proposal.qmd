@@ -44,11 +44,16 @@ H2: Ridings that experience a decline in local news coverage will exhibit higher
 
 # Dataset and Methods
 
-We will be relying on datasets from two sources. One is from the @localnews. As part of this project, raw data is published every two months with updates on changes to local media outlets, each report ranging from the present day back to 2008. The data is published as an excel spreadsheet, easily converted to a .csv file and imported using the read_csv function from tidyverse. Each row in the dataset is a change to one local news source, i.e. a paper or other media outlet, and what happened to it. There are three key variables in this dataset for the purposes of answering our research questions. One is "Transition Type," as the project maps positive changes (new papers, increases in service) as well as negative (closures, etc.). The other two key variables are "Date of Change" and "Community" (i.e. city, town, etc. of publication), which will allow us to compare these changes to election results by year and region.
+We will be relying on datasets from two sources. One is from the @localnews, who every two months reports changes to local media outlets, from 2008 onwards. Each row in the dataset is a change to one local news source, i.e. a paper or other media outlet, and what happened to it. There are three key variables in this dataset for the purposes of answering our research questions. One is "Transition Type," as the project maps positive changes (new papers, increases in service) as well as negative (closures, etc.). The other two key variables are "Date of Change" and "Community" (i.e. city, town, etc. of publication), which will allow us to compare these changes to election results by year and region.
 
-The other datasets we will be using are Canadian general election results over the same period (2008-2025), downloaded from @electionscanada. We will be using the official voting results results in what Elections Canada calls "Format 2," or "pollresults_resultatsbureau," which includes each candidate's political party, "Political Affiliation Name_English," and vote counts, "Candidate VoteCount." These variables together allow us to measure the relative prominence of small parties, which we take to be an indicator of left-right polarization. This format also includes the number of electors for each poll, which we will need to calculate turnout, as the ratio of total votes cast to number of electors. Though these poll-by-poll data have the disadvantage of being more granular than our local news data, we choose this format because of the flexibility of having variables separate from one another, such as candidate party and names, and because it includes the number of electors in the same place as the rest of this information. None of the summary tables we looked at from Elections Canada seemed to meet these requirements.
+The other datasets we will be using are Canadian general election results over the same period (2008-2025), downloaded from @electionscanada. These are published in two formats, one for each riding. In Format 1, each row is a poll with a unique ID number, and variables recorded include candidate/total vote amounts and number of electors. In Format 2, each row is a poll result for one candidate, though poll numbers and candidate names/parties are tidily kept as distinct variables. Because Format 2 includes each candidate's political party and vote count as separate variables, it will allow us to study polarization by calculating vote shares. Both formats include electors as a variable, a necessary number for calculating turnout, but Format 1 also includes "Total Votes" for each poll, making turnout calculation easier.
 
-Our plan is to first correspond the election ridings to the "communities" identified in the news map. We will then explore methods of comparing local news health and political results, especially in communities most affected by reduction in local news sources. One way is by mathematical correlation: this could perhaps be done by calculating a ratio between a community's population and an integer representing negative/positive changes over the period between general elections, then calculating both the turnout and vote share of small parties in each election, by community. Then we could measure statistical correlation among these three new continuous numeric variables for each election year using R, and chart and compare their movement over time. Alternatively, we can reduce the scope by zeroing in on some particular communities and attempting to tell their local news stories, drawing parallels to interesting political results, seeing if these data match our hypotheses or not.
+Our plan is to first correspond the election ridings to the "communities" identified in the news map data. One way we might do this is using @statcan census data: Census Profile datasets include federal electoral district IDs, as do our election results, and the Census Subdivision Names that these districts are grouped under can be matched to our communities of interest. This shortcut may not work for the 2025 results, however, as the district IDs will be affected by redistricting which occurred after the 2021 census. 
+We will then calculate three new variables for each community and period between elections: 1) the positive/negative change in local news for each community, i.e. a ratio between population and news changes, 2) the change in voter turnout between elections, and 3) the level of polarization, measured using margin of victory. We would then measure statistical correlation among these continuous numeric variables across time using R. If we find statistical significance, we can calculate and compare levels/directions of correlation as the following coefficients: 
+
+$$\Delta Turnout = \beta_0 + \beta_1\Delta News + \epsilon \\$$
+$$\Delta MOV = \beta_0 + \beta_1\Delta News + \epsilon\\$$
+$$\beta_0: \text{intercept;}\ \beta_1: \text{correlation coefficient}$$
 
 # Exploratory Data Analysis
 
@@ -60,7 +65,7 @@ election2025 <- read_csv(here("data", "01-raw_data", "proposal_data",  "2025poll
 format2025 <- read_csv(here("data", "01-raw_data", "proposal_data",  "2025pollsformat1", "pollbypoll_bureauparbureau24070.csv")) #alt. format
 ```
 
-Even before we embark on this in-depth statistical work, we can use our datasets to tell us a number of things. Our local news dataset tells us that the majority of changes tracked in Canadian local news are negative, i.e. not new outlets being created.
+We will explore our data using R by @citeR, and the packages here, by @citehere and tidyverse, by @citetidyverse. Our local news dataset tells us that the majority of changes tracked in Canadian local news are negative, i.e. not new outlets being created.
 
 ```{r}
 #| echo: false
@@ -73,7 +78,7 @@ news |>
   arrange(desc(Total))
 ```
 
-We can move in a little closer, using visuals to relate the story that our datasets tell us. For example, we can illustrate the number of negative changes (closures, shifts to online, reduction in service, etc.) in local news over time for a particular community. The following line plot, for example, shows that 2015 and 2019 saw spikes in local news reduction in the city of Toronto, information useful to our examination of the political climate over this period.
+We can use our dataset to look at negative changes in local news over time for a particular community. The following line plot shows that 2015 and 2019 saw spikes in local news reduction in the city of Toronto. 
 
 ```{r}
 #| echo: false
@@ -87,7 +92,7 @@ torontonews |>
   group_by(date) |> #getting no. of observations per year
   count() |>
   ungroup() |>
-  ggplot(aes(x = date, y = n)) + #creading line plot, choosing colour
+  ggplot(aes(x = date, y = n)) + 
   geom_line(colour = "navy") + #lineplot, choosing colour
   scale_x_continuous(breaks = scales::pretty_breaks(n=9)) +
   labs(x = "Year", y = "Number of Negative Changes", 
@@ -95,7 +100,7 @@ torontonews |>
   
 ```
 
-With our elections datasets, we can find the vote shares of small parties within a riding, or calculate turnout numbers, and compare them across polls. Here I use Elections Canada's Format 1 to compute turnout because it already includes vote totals, though it can be done with Format 2 by summing the candidate vote totals. The histogram below shows the distribution of turnout across polls in a constituency. This visual shows us that turnout numbers between 30 and 50 percent are most typical. It also shows some turnout numbers above 100 percent: filtering the dataset to see what these are shows that it is mostly mobile polls that show vote totals greater than registered electors. That turnout numbers may get murky when including mobile polls is useful information to have for when we calculate turnout by riding for this project.
+With our elections datasets, we can find the vote shares within a riding, which we will need to measure polarization. The table below shows small parties' results for our sample riding. We can also calculate turnout numbers, and compare them across polls. The histogram below shows the distribution of turnout across polls in a constituency. This visual shows us that turnout numbers between 30 and 50 percent are most typical in this case. It also shows some turnout numbers above 100 percent: filtering the dataset to see what these are shows that it is mostly mobile polls that show vote totals greater than registered electors. That calculating turnout numbers may become complicated by the inclusion of mobile polls or other unforeseen aspects of how these data are recorded is useful information to have for when we calculate turnout by riding for this project.
 
 ```{r}
 #| echo: false
@@ -112,31 +117,29 @@ election2025 |> #vote totals for parties
 
 ```
 
-
 ```{r}
 #| echo: false
-#| warning: false
+#| warning: false #remove warning that some data falls outside plot or is null
 
 format2025 |>
-  group_by(`Polling Division Number/Numéro de section de vote`) |>
-  mutate(turnout = `Total Votes/Total des votes`/`Electors/Électeurs`) |>
+  mutate(turnout = `Total Votes/Total des votes`/`Electors/Électeurs`) |> #calculating turnout
   ggplot(aes(x = turnout)) +
-  geom_histogram(bins = 60, fill = "purple") +
-  scale_x_log10() +
+  geom_histogram(bins = 60, fill = "purple") + #histogram of turnout levels
+  scale_x_log10() + #scale for readability
   labs(x = "Turnout", 
        y = "Number of Polls", 
        title = "Distribution of Turnout in Saint-Maurice--Champlain Riding")
 ```
+
 ```{r}
-#| echo: false
+#| include: false
 
 format2025 |>
-  filter(`Total Votes/Total des votes` > `Electors/Électeurs`)|>
+  filter(`Total Votes/Total des votes` > `Electors/Électeurs`)|> #what are these over 100% turnout polls?
   select(c(`Polling Division Name/Nom de section de vote`, `Total Votes/Total des votes`, `Electors/Électeurs`))
 ```
 
-
-After we have merged all the datasets we want to work with, we will be able to similarly calculate and compare turnout among ridings or cities rather than polls, and over time.
+Working with all the riding datasets together as we will be doing for the final project, we will be able to similarly calculate and compare turnout, as well as polarization, among ridings, and then among communities, over time.
 
 \newpage
 
