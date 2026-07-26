@@ -178,3 +178,27 @@ election_all |>
   arrange(fed_code, election_year) |>
   tt()
 ```
+
+## III. Merging Election Results and Local News Data
+
+```{r}
+news_fed <- news_fed |>
+  mutate(
+    fed_code = substr(
+      FEDDGUID_CEFIDUGD,
+      nchar(FEDDGUID_CEFIDUGD) - 4,
+      nchar(FEDDGUID_CEFIDUGD)
+    )
+  )
+
+news_fed <- news_fed |>
+  mutate(fed_code = as.character(fed_code))
+
+election_all <- election_all |>
+  mutate(fed_code = as.character(fed_code))
+
+news_election <- news_fed |>
+  left_join(election_all, by = "fed_code")
+
+```
+
