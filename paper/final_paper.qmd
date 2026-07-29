@@ -21,6 +21,7 @@ library(here)
 library(sf)
 library(tinytable)
 library(scales)
+library(ggplot2)
 ```
 
 ## Introduction
@@ -36,6 +37,8 @@ library(scales)
 fed_boundaries <- st_read(
   here("data", "01-raw_data", "geography", "FED_2021", "FED_2021.shp"))
 
+head(fed_boundaries)
+
 ```
 
 ```{r}
@@ -43,7 +46,7 @@ fed_boundaries <- st_read(
 # rename federal electoral district ID column
 fed_boundaries <- fed_boundaries |>
   rename(FEDDGUID_CEFIDUGD = DGUID) |>
-  select(FEDDGUID_CEFIDUGD,FEDENAME,geometry) # filter columns of interests
+  select(FEDDGUID_CEFIDUGD,FEDENAME,PRUID,geometry) # filter columns of interests
 
 head(fed_boundaries)
 ```
@@ -105,13 +108,30 @@ news_sf <- st_transform(
   st_crs(fed_boundaries)
 )
 
+# merge again
+news_fed <- st_join(news_sf, fed_boundaries, join = st_within)
+
 # check newly assigned coordinates
-st_coordinates(
-  news_sf |>
-    filter(title == "Radio-Canada TV - Vancouver")
-)
+news_fed |>
+  filter(title == "Radio-Canada TV - Vancouver")
 
 ```
+
+
+Map
+```{r}
+ggplot() +
+  # map the federal electoral districts as the base map
+  geom_sf(data = fed_boundaries, fill = "lightblue") +
+  
+  # map the location of news outlets
+  geom_sf(data = news_fed, size = 1, alpha = 0.7) +
+  labs(
+    title = "Local News Outlets") +
+  theme_minimal()
+
+```
+
 
 ### II. Federal Election Results
 
@@ -201,4 +221,3 @@ news_election <- news_fed |>
   left_join(election_all, by = "fed_code")
 
 ```
-
