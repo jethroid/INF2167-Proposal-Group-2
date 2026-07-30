@@ -33,6 +33,6 @@ for (i in seq_along(form1)) {
 }
 
 # downloading census electoral boundary files data:
-# can be downloaded by iterating over list of urls like above, or
+# can be downloaded by iterating over list of urls like above from https://open.canada.ca/en, or
 # accessing cancensus API and saving API token to .Renviron file, 
-# need to double check format and what files needed
+# need to double check format and what data files needed
