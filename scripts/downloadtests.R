@@ -5,6 +5,7 @@ library(tidyverse)
 library(here)
 library(readxl)
 library(readr)
+library(cancensus)
 
 # downloading news data, converting to .csv
 xlpath = here("data", "01-raw_data", "paper_data", "local_newst.xlsx")
@@ -31,3 +32,7 @@ for (i in seq_along(form1)) {
   file.rename(from = unpath, to = here("data", "01-raw_data", "paper_data", "electtest", years[[i]]))
 }
 
+# downloading census electoral boundary files data:
+# can be downloaded by iterating over list of urls like above, or
+# accessing cancensus API and saving API token to .Renviron file, 
+# need to double check format and what files needed
