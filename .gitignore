@@ -33,3 +33,4 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 .RDataTmp
+.RDataTmp1
