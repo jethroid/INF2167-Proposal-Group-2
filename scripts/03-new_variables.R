@@ -14,6 +14,8 @@ newselec <- read_csv(here("data", "02-analysis_data", "news_election.csv"))
 ##get total and relative turnout for election years##
 
 #download report
+dir.create(here("data", "01-raw_data", "turnout"), recursive = TRUE, showWarnings = FALSE)
+
 download.file("https://www.elections.ca/res/rep/off/ovr2021app/53/data_donnees/table_tableau04.csv",
               destfile = here("data", "01-raw_data", "turnout", "turnout.csv"),
               mode = "wb")
