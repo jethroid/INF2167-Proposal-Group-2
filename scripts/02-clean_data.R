@@ -9,11 +9,12 @@ library(here)
 library(sf)
 library(tinytable)
 library(scales)
+library(fs)
 
 #### Spatial Data ####
 # import spatial data with simple feature package
 fed_boundaries <- st_read(
-  here("data", "01-raw_data", "geography", "FED_2021", "FED_2021.shp"))
+  here("data", "01-raw_data", "geography", "2021", "lfed000b21a_e.shp"))
 
 # rename federal electoral district ID column
 fed_boundaries <- fed_boundaries |>
@@ -67,10 +68,29 @@ news_fed <- st_join(news_sf, fed_boundaries, join = st_within)
 
 
 ### Elections data ###
-# load election results
-election_2025 <- read_csv((here("data", "01-raw_data", "paper_data",  "election_2025_ajax.csv")))
-election_2021 <- read_csv((here("data", "01-raw_data", "paper_data",  "election_2021_ajax.csv")))
-election_2019 <- read_csv((here("data", "01-raw_data", "paper_data",  "election_2019_ajax.csv")))
+
+# listing all csvs for a given year using ls package
+paths2021 <- dir_ls(path = here("data", "01-raw_data", "paper_data", "2021"))
+paths2019 <- dir_ls(path = here("data", "01-raw_data", "paper_data", "2019"))
+paths2015 <- dir_ls(path = here("data", "01-raw_data", "paper_data", "2015"))
+
+# remove uncommon variables i.e. candidate names
+remnam <- function(data) {
+  read_csv(data) |>
+  select("Electoral District Number/Numéro de circonscription",
+        "Electoral District Name/Nom de circonscription",
+        "Total Votes/Total des votes",
+        "Electors/Électeurs")|>
+  write_csv(data)}
+
+map(paths2021, remnam)
+map(paths2019, remnam)
+map(paths2015, remnam)
+
+# load election results                 
+election_2021 <- read_csv(paths2021)
+election_2019 <- read_csv(paths2019)
+election_2015 <- read_csv(paths2015)
 
 # create a function to clean election data
 calculate_turnout <- function(data, year) {
@@ -98,17 +118,17 @@ calculate_turnout <- function(data, year) {
 }
 
 # get turnout rate for each election
-election_2025_fed <- calculate_turnout(election_2025, 2025)
-
 election_2021_fed <- calculate_turnout(election_2021, 2021)
 
 election_2019_fed <- calculate_turnout(election_2019, 2019)
 
+election_2015_fed <- calculate_turnout(election_2015, 2015)
+
 # combine all election data
 election_all <- bind_rows(
-  election_2025_fed,
   election_2021_fed,
-  election_2019_fed
+  election_2019_fed,
+  election_2015_fed
 )
 
 # transform id column for merging two datasets
