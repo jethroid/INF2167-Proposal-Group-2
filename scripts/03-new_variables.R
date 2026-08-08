@@ -10,6 +10,7 @@ library(janitor)
 #loading merged data from step 2
 newselec <- read_csv(here("data", "02-analysis_data", "news_election.csv"))
 
+
 ##get total and relative turnout for election years##
 
 #download report
@@ -39,3 +40,40 @@ newselec <- newselec |>
 newselec <- newselec |>
   mutate(turnout_diff = turnout - national_turnout)
 write_csv(newselec, here("data", "02-analysis_data", "news_election.csv"))
+
+
+## Add variable for news changes between election years ##
+
+neg_change <- c("closed", "shifted to online", "closed due to merger", "decrease in service")
+pos_change <- c("new", "increase in service")
+
+newselec <- newselec |>
+  rename(change_type = "Transition Type") |>
+  rename(change_date = "Date of Change") |>
+  
+  # establishing types of changes
+  mutate(type_val = case_when(
+    change_type %in% neg_change ~ -1,
+    change_type %in% pos_change ~ 1,
+    TRUE ~ 0
+  ))
+
+write_csv(newselec, here("data", "02-analysis_data", "news_election.csv"))
+
+#### news_election.csv August 8 7:00 AM ####  
+  
+  # adding election period variable 
+  mutate(elec_period = case_when(
+    between(ymd(change_date), ymd("2019-10-21"), ymd("2021-09-19")) ~ "2019-21",
+    between(ymd(change_date), ymd("2015-10-19"), ymd("2019-10-20")) ~ "2015-19",
+    TRUE ~ "not_between"
+  )) |>
+  
+  # number of changes per period, per riding
+  group_by(fed_code, elec_period) |>
+  mutate(changes_between = sum(type_val, na.rm = TRUE)/3)|>
+  ungroup() |>
+  
+## Adding difference in turnout between elections ##
+
+view(newselec)
