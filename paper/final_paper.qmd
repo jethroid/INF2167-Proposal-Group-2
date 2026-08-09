@@ -13,23 +13,32 @@ bibliography: paper_references.bib
 
 # Abstract
 
-
 # Introduction
 
+Local journalism in Canada is experiencing a sharp decline, with 2.5 million Canadians, or 7 percent of the population, living in postal codes with one or no local media outlets [@macdonald_news_2025]. As local news provides important information about community affairs to electorates, the continued loss of local news can leave citizens less informed about local issues, potentially discouraging political participation and thereby threatening the democratic system. Despite these crucial political implications, existing studies on local news deserts have overwhelmingly focused on the United States, which has a different electoral system and political culture from Canada. Therefore, our project aims to contribute to the understanding of the relationship between local news and political participation among Canadians by answering the following research question:
+
+**How does the net trajectory of the local news market affect a riding’s voter turnout relative to the national baseline?**
+Our hypothesis is that ridings that experience more negative changes in their local news market will have lower voter turnout than the national average. To answer this question, we will use federal election results from Elections Canada and local news outlet data from the Local News Research Project, led by researchers at Toronto Metropolitan University [@lindgren_local_nodate] to conduct a linear regression analysis quantifying the relationship between changes in the local news and voter turnout in Canada. We found that [add findings…]
 
 # Relevant Literature
+The loss of local news in Canada affects a sizable portion of the population, but its effects are not distributed equally. @barber_left_2026 found that news outlet closures are more likely to occur in “left-behind” places, places that are “small, shrinking, peripheral", reflecting the broader inequalities driven by globalization. Economic decline in these places has resulted in unemployment, business closures, and retrenchment in public services, all of which have likely undermined the vitality of local news outlets (p. 11). @barber_left_2026 also highlighted the political consequences of news closures in left-behind places, arguing that voter turnout is likely to decline because of a lack of access to information and pessimism that their votes do not matter in elections. Additionally, the loss of local news can widen the space for misinformation and conspiracy theories, contributing to greater support for populist and polarizing agendas (p. 12).
 
+@hayes_decline_2018 argue that local news helps electorates develop the political knowledge necessary to participate in the democratic process, such as voting. Using U.S. House campaigns in 2010 and 2014, they showed that citizen engagement declined as coverage of House races declined. With less reporting on candidates and their campaigns, fewer voters were able to rate the candidates in a survey (p. 335). The authors argue that the deterioration of political knowledge is concerning, as an informed electorate that is able to hold elected officials accountable improves the representation and legitimacy of the political system.
+
+Besides being a source of information, local journalism can serve as an active venue for community members to participate in the political process. @magasic_examining_2023 provide examples from Australian towns where residents expressed their opinions and advocated for social issues, such as cuts to welfare services. Local journalists help maintain the relationship between the government and the public, allowing for the exchange of information through sections such as “Letters to the Editor.” Local news fosters a sense of community and thereby promotes civic engagement.
+
+@haddock_local_2026 expanded on this idea by arguing that the loss of local news negatively affects community social capital, resulting in a feedback loop that weakens trust between voters and institutions. Reduced coverage of local issues and elected officials affects the community’s ability to monitor crime and intensifies polarization in rural communities, as residents turn to national, partisan media for political information.
 
 # Dataset and Methods
 
+
+$$turnout\_diff_{it} = \beta_0 + \beta_1 \cdot cumulative\_news_{it} + \epsilon_{it}$$
 
 # Results and Findings
 
 
 # Discussion and Conclusion
 
-
 \newpage
 
 # References
-
