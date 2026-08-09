@@ -6,6 +6,7 @@
 library(tidyverse)
 library(here)
 library(janitor)
+library(lubridate)
 
 #loading merged data from step 2
 newselec <- read_csv(here("data", "02-analysis_data", "news_election.csv"))
@@ -41,7 +42,6 @@ newselec <- newselec |>
 #add turnout difference
 newselec <- newselec |>
   mutate(turnout_diff = turnout - national_turnout)
-write_csv(newselec, here("data", "02-analysis_data", "news_election.csv"))
 
 
 ## Add variable for news changes between election years ##
@@ -60,22 +60,27 @@ newselec <- newselec |>
     TRUE ~ 0
   ))
 
-write_csv(newselec, here("data", "02-analysis_data", "news_election.csv"))
-
 #### news_election.csv August 8 7:00 AM ####  
+
+newselec <- newselec |>
+  mutate(
+    change_date = ymd(change_date),
+    
+    # create a new column with the exact date of the election for that year
+    election_date = case_when(
+      election_year == 2015 ~ ymd("2015-10-19"),
+      election_year == 2019 ~ ymd("2019-10-21"),
+      election_year == 2021 ~ ymd("2021-09-19"))) |>
   
-  # adding election period variable 
-  mutate(elec_period = case_when(
-    between(ymd(change_date), ymd("2019-10-21"), ymd("2021-09-19")) ~ "2019-21",
-    between(ymd(change_date), ymd("2015-10-19"), ymd("2019-10-20")) ~ "2015-19",
-    TRUE ~ "not_between"
-  )) |>
+  # group by both the riding and election year
+  group_by(fed_code, election_year) |>
   
-  # number of changes per period, per riding
-  group_by(fed_code, elec_period) |>
-  mutate(changes_between = sum(type_val, na.rm = TRUE)/3)|>
+  # calculate the cumulative change of local news for the riding up to the election date
+  mutate(
+    cumulative_news = sum(type_val[change_date <= election_date], na.rm = TRUE)) |>
   ungroup() |>
   
-## Adding difference in turnout between elections ##
+  # remove duplicated riding rows
+  distinct(fed_code, election_year, .keep_all = TRUE)
 
-view(newselec)
+write_csv(newselec, here("data", "02-analysis_data", "news_election.csv"))
