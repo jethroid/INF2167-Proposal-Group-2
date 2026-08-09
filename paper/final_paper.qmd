@@ -32,7 +32,8 @@ Besides being a source of information, local journalism can serve as an active v
 @haddock_local_2026 expanded on this idea by arguing that the loss of local news negatively affects community social capital, resulting in a feedback loop that weakens trust between voters and institutions. Reduced coverage of local issues and elected officials affects the community’s ability to monitor crime and intensifies polarization in rural communities, as residents turn to national, partisan media for political information.
 
 # Dataset and Methods
-We rely on datasets from three sources. The local news dataset was downloaded from the Local News Research Project, which releases its local news map report as .xlsx files on a bi-monthly basis, tracking changes in local news outlets in Canada since 2008 [@lindgren_local_nodate]. For our analysis, we obtained the data as of June 8, 2026, which contains 1,337 news outlets and 18 variables. It is a spatial dataset because it includes the coordinates of individual outlets, which are crucial for our subsequent step of merging the data with the election results. Transition Type is another key variable that records changes to news outlets and groups them into eight categories: “closed,” “shifted to online,” “closed due to merger,” “decrease in service,” “new,” “increase in service,” “new outlet produced by merger,” and “daily becomes a community paper.” The Date of Change column is used to map each change to the corresponding election period.
+
+We rely on datasets from three sources. The local news dataset was downloaded from the Local News Research Project, which releases its local news map report as .xlsx files on a bi-monthly basis, tracking changes in local news outlets in Canada since 2008 [@lindgren_local_nodate]. For our analysis, we obtained the data as of June 8, 2026, which contains 1,337 news outlets and 18 variables. It is a spatial dataset because it includes the coordinates of individual outlets, which are crucial for our subsequent step of merging the data with the election results. Transition Type is another key variable that records changes to news outlets and groups them into eight categories: “closed,” “shifted to online,” “closed due to merger,” “decrease in service,” “new,” “increase in service,” “new outlet produced by merger,” and “daily becomes a community paper.” The Date of Change column is used to map each change to the corresponding election period. These categories are re-coded into two categories `positive` and `negative` for measuring the changes of local news.
 
 The second dataset we use consists of Canadian federal election results for 2015, 2019, and 2021, downloaded from Elections Canada [@electionscanada]. The agency publishes election results by polling station for each election year as CSV files stored in a compressed folder. Total Votes and Electors are the key variables used to calculate voter turnout. Each CSV file also includes the Electoral District Number, which identifies the riding and is used to merge the election results with the local news dataset.
 
@@ -40,11 +41,12 @@ The Federal Electoral District Boundary Files are the third dataset we use to me
 
 To merge the local news and election datasets, we first merge the news data with the boundary file by conducting a spatial join using the Simple Features (sf) package [@simple_features]. Each observation in the news dataset is assigned an electoral district ID from the shapefile if it falls within the corresponding polygon. With the electoral district ID attached, the news dataset can then be merged with the election results using a left join.
 
-
-
+To quantify the relationship between voter turnout and changes in local news outlets, we ran the following linear regression model:
 $$turnout\_diff_{it} = \beta_0 + \beta_1 \cdot cumulative\_news_{it} + \epsilon_{it}$$
+The outcome variable, $turnout\_diff_{it}$, is the difference between the turnout of a specific riding $i$ in the election year $t$ and the overall national turnout in that same election year. The predictor, $cumulative\_news_{it}$, represents the net running sum of local news changes for a specific riding $i$ up to the date of the election $t$. 
 
 # Results and Findings
+
 
 # Discussion and Conclusion
 
