@@ -60,7 +60,6 @@ newselec <- newselec |>
     TRUE ~ 0
   ))
 
-#### news_election.csv August 8 7:00 AM ####  
 
 newselec <- newselec |>
   mutate(
@@ -87,5 +86,9 @@ newselec <- newselec |>
 summary(newselec$cumulative_news)
 
 summary(newselec$turnout_diff)
+
+# tidy names
+newselec <- newselec |>
+  clean_names()
 
 write_csv(newselec, here("data", "02-analysis_data", "news_election.csv"))
