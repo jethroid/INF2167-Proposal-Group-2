@@ -1,37 +1,37 @@
 #### Preamble ####
-# Purpose: Models... [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Date: 11 February 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
-# License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+# Purpose: Linear Regression
+# Author: William Chan
+# Date: August 9, 2026
 
 
 #### Workspace setup ####
 library(tidyverse)
-library(rstanarm)
+library(here)
+library(modelsummary)
 
-#### Read data ####
-analysis_data <- read_csv("data/analysis_data/analysis_data.csv")
+####read data ####
+newselec <- read_csv(here("data", "02-analysis_data", "news_election.csv"))
 
-### Model data ####
-first_model <-
-  stan_glm(
-    formula = flying_time ~ length + width,
-    data = analysis_data,
-    family = gaussian(),
-    prior = normal(location = 0, scale = 2.5, autoscale = TRUE),
-    prior_intercept = normal(location = 0, scale = 2.5, autoscale = TRUE),
-    prior_aux = exponential(rate = 1, autoscale = TRUE),
-    seed = 853
-  )
+##fit linear regression model##
+turnout_model <- lm(turnout_diff ~ cumulative_news, data = newselec)
 
+#print regression summary
+modelsummary(turnout_model)
 
-#### Save model ####
-saveRDS(
-  first_model,
-  file = "models/first_model.rds"
-)
+#plot regression results
+
+ggplot(data = newselec, 
+       aes(x = cumulative_news, y = turnout_diff)) +
+  geom_point(alpha = 0.3, color = "darkgray") +
+  
+  #overlay the regression line with a 95% confidence interval
+  geom_smooth(method = "lm", color = "blue", se = TRUE) +
+  labs(
+    title = "Effect of Local News Changes on Voter Turnout (2015-2021)",
+    x = "Cumulative News Score (Net Change)",
+    y = "Turnout Difference from National Average"
+  ) +
+  
+  theme_minimal()
 
 

@@ -83,4 +83,9 @@ newselec <- newselec |>
   # remove duplicated riding rows
   distinct(fed_code, election_year, .keep_all = TRUE)
 
+# check key statistics of cumulative change of news and turnout difference
+summary(newselec$cumulative_news)
+
+summary(newselec$turnout_diff)
+
 write_csv(newselec, here("data", "02-analysis_data", "news_election.csv"))
