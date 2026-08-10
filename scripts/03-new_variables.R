@@ -91,4 +91,28 @@ summary(newselec$turnout_diff)
 newselec <- newselec |>
   clean_names()
 
+# turnout year over year, work in progress
+
+newselec <- newselec |>
+  mutate(turnout_last = case_when(
+    election_year == 2021 ~ turnout - lead(turnout),
+    election_year == 2019 ~ turnout - lead(turnout),
+    TRUE ~ NA))
+
+# turnout difference year over year, work in progress
+
+newselec <- newselec |>
+  mutate(turnout_diff_last = case_when(
+    election_year == 2021 ~ turnout_diff - lead(turnout_diff),
+    election_year == 2019 ~ turnout_diff - lead(turnout_diff),
+    TRUE ~ NA))
+
+# news year over year, work in progress
+
+newselec <- newselec |>
+  mutate(change_last = case_when(
+    election_year == 2021 ~ cumulative_news - lead(cumulative_news),
+    election_year == 2019 ~ cumulative_news - lead(cumulative_news),
+    TRUE ~ NA))
+
 write_csv(newselec, here("data", "02-analysis_data", "news_election.csv"))

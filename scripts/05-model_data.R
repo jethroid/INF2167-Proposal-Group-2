@@ -35,3 +35,26 @@ ggplot(data = newselec,
   theme_minimal()
 
 
+# try regression with year over year variables, work in progress
+
+turnout_last_model <- lm(turnout_diff_last ~ change_last, data = newselec)
+
+# print regression summary
+
+modelsummary(turnout_last_model)
+
+#plot regression results
+
+ggplot(data = newselec, 
+       aes(x = change_last, y = turnout_diff_last)) +
+  geom_point(alpha = 0.3, color = "darkgray") +
+  
+  #overlay the regression line with a 95% confidence interval
+  geom_smooth(method = "lm", color = "blue", se = TRUE) +
+  labs(
+    title = "Effect of Local News Changes on Voter Turnout, Year-Over-Year",
+    x = "Difference in News Change",
+    y = "Turnout Difference"
+  ) +
+  
+  theme_minimal()
