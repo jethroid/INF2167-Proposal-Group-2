@@ -35,7 +35,7 @@ ggplot(data = newselec,
   theme_minimal()
 
 
-# try regression with year over year variables, work in progress
+# try regression with year over year variables
 
 turnout_last_model <- lm(turnout_diff_last ~ change_last, data = newselec)
 
@@ -58,3 +58,19 @@ ggplot(data = newselec,
   ) +
   
   theme_minimal()
+
+# try regression with year over year variables, and only old media
+
+turnout_last_model_old <- lm(turnout_diff_last ~ change_last_old, data = newselec)
+
+# print regression summary
+
+modelsummary(turnout_last_model_old)
+
+##try linear regression model with traditional media##
+
+turnout_model_old <- lm(turnout_diff ~ cumulative_news_old, data = newselec)
+
+#print regression summary
+
+modelsummary(turnout_model_old)

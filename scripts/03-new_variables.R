@@ -53,12 +53,24 @@ newselec <- newselec |>
   rename(change_type = "Transition Type") |>
   rename(change_date = "Date of Change") |>
   
+  #tidy names
+  clean_names() |>
+  
   # establishing types of changes
   mutate(type_val = case_when(
     change_type %in% neg_change ~ -1,
     change_type %in% pos_change ~ 1,
     TRUE ~ 0
-  ))
+  )) |>
+
+
+   
+# only old media
+
+  mutate(type_val_old = case_when(
+    media_type != "online" & change_type %in% neg_change ~ -1,
+    media_type != "online" & change_type %in% pos_change ~ 1,
+    TRUE ~ 0))
 
 
 newselec <- newselec |>
@@ -77,6 +89,7 @@ newselec <- newselec |>
   # calculate the cumulative change of local news for the riding up to the election date
   mutate(
     cumulative_news = sum(type_val[change_date <= election_date], na.rm = TRUE)) |>
+    mutate(cumulative_news_old = sum(type_val_old[change_date <= election_date], na.rm = TRUE)) |>
   ungroup() |>
   
   # remove duplicated riding rows
@@ -87,11 +100,8 @@ summary(newselec$cumulative_news)
 
 summary(newselec$turnout_diff)
 
-# tidy names
-newselec <- newselec |>
-  clean_names()
 
-# turnout year over year, work in progress
+# turnout year over year
 
 newselec <- newselec |>
   mutate(turnout_last = case_when(
@@ -99,7 +109,7 @@ newselec <- newselec |>
     election_year == 2019 ~ turnout - lead(turnout),
     TRUE ~ NA))
 
-# turnout difference year over year, work in progress
+# turnout difference year over year
 
 newselec <- newselec |>
   mutate(turnout_diff_last = case_when(
@@ -107,12 +117,20 @@ newselec <- newselec |>
     election_year == 2019 ~ turnout_diff - lead(turnout_diff),
     TRUE ~ NA))
 
-# news year over year, work in progress
+# changes to news year over year
 
 newselec <- newselec |>
   mutate(change_last = case_when(
     election_year == 2021 ~ cumulative_news - lead(cumulative_news),
     election_year == 2019 ~ cumulative_news - lead(cumulative_news),
+    TRUE ~ NA))
+
+# changes to traditional news outlets year over year
+
+newselec <- newselec |>
+  mutate(change_last_old = case_when(
+    election_year == 2021 ~ cumulative_news_old - lead(cumulative_news_old),
+    election_year == 2019 ~ cumulative_news_old - lead(cumulative_news_old),
     TRUE ~ NA))
 
 write_csv(newselec, here("data", "02-analysis_data", "news_election.csv"))

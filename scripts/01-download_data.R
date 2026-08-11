@@ -7,7 +7,7 @@ library(tidyverse)
 library(here)
 library(readxl)
 library(readr)
-library(cancensus)
+library(fs)
 
 # downloading news data, converting to .csv
 xlpath = here("data", "01-raw_data", "paper_data", "local_news.xlsx")
@@ -31,6 +31,22 @@ for (i in seq_along(form1)) {
   unzip(zpath, exdir = unpath)
   file.rename(from = unpath, to = here("data", "01-raw_data", "paper_data", years[[i]]))
 }
+
+# removing table files from 2015 election data
+unlink(here("data", "01-raw_data", "paper_data", "2015", "table_tableau01.csv"))
+unlink(here("data", "01-raw_data", "paper_data", "2015", "table_tableau02.csv"))
+unlink(here("data", "01-raw_data", "paper_data", "2015", "table_tableau03.csv"))
+unlink(here("data", "01-raw_data", "paper_data", "2015", "table_tableau04.csv"))
+unlink(here("data", "01-raw_data", "paper_data", "2015", "table_tableau05.csv"))
+unlink(here("data", "01-raw_data", "paper_data", "2015", "table_tableau06.csv"))
+unlink(here("data", "01-raw_data", "paper_data", "2015", "table_tableau07.csv"))
+unlink(here("data", "01-raw_data", "paper_data", "2015", "table_tableau08.csv"))
+unlink(here("data", "01-raw_data", "paper_data", "2015", "table_tableau09.csv"))
+unlink(here("data", "01-raw_data", "paper_data", "2015", "table_tableau10.csv"))
+unlink(here("data", "01-raw_data", "paper_data", "2015", "table_tableau11.csv"))
+unlink(here("data", "01-raw_data", "paper_data", "2015", "table_tableau12.csv"))
+unlink(here("data", "01-raw_data", "paper_data", "2015", "table_tableau13.csv"))
+
 
 # downloading electoral district boundary shape files
 unpath = here("data", "01-raw_data", "geography", "2021")
