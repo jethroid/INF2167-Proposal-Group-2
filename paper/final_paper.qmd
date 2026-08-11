@@ -47,6 +47,84 @@ The outcome variable, $turnout\_diff_{it}$, is the difference between the turnou
 
 # Results and Findings
 
+```{r}
+#| echo: false
+#| include: false
+
+library(tidyverse)
+library(tinytable)
+library(here)
+library(scales)
+library(modelsummary)
+
+withdupes <- read_csv(here("data", "02-analysis_data", "news_election_before_dupe_removal.csv"))
+newselec <- read_csv(here("data", "02-analysis_data", "news_election.csv"))
+
+```
+
+## Regression
+
+```{r}
+
+```
+
+
+## Merged Dataset
+
+
+```{r}
+#| echo: false
+
+withdupes |>
+  group_by(media_type) |>
+  summarize(neg_number = -sum(type_val[type_val == -1])/3) |>
+  arrange(desc(neg_number)) |>
+  tt(caption = "Media Types With The Most Negative News Changes", colnames = FALSE, width = 1) |>
+  style_tt(i = "caption", bold = TRUE) |>
+  style_tt(i=1, j=2, background = "#FFADAD") |>
+  style_tt(i=6:9, j=2, background = "#FFE0E0") |>
+  style_tt(i=2:5, j=2, background = "#FFC2C2")
+```
+
+
+
+```{r}
+#| layout-ncol: 2
+#| echo: false
+
+# make table of worst news changes as of 2021
+
+newselec |>
+  filter(election_year == 2021) |>
+  select(fedename, cumulative_news) |>
+  arrange(cumulative_news) |>
+  slice_head(n=23) |>
+  tt(caption = "Ridings With The Most Negative News Impact Score", colnames = FALSE, width = 1) |>
+  style_tt(i = "caption", bold = TRUE) |>
+  style_tt(i=1:5, j=2, background = "#F5C7FF") |>
+  style_tt(i=13:23, j=2, background = "#FCEBFF") |>
+  style_tt(i=6:12, j=2, background = "#F9DBFF")|>
+  style_tt(i=12, j=1, background = "#D1DAFF") |>
+  style_tt(i=15, j=1, background = "#D1DAFF") |>
+  style_tt(i=20, j=1, background = "#D1DAFF")
+
+# make table of lowest turnout relative to ntl. avg.
+
+newselec |>
+  filter(election_year == 2021) |>
+  select(fedename, turnout_diff) |>
+  arrange(turnout_diff) |>
+  slice_head(n=23) |>
+  tt(caption = "Ridings With The Lowest Turnout Relative to National Average", colnames = FALSE, width = 1) |>
+  style_tt(i = "caption", bold = TRUE) |>
+  style_tt(i=1:5, j=2, background = "#FFDB9E") |>
+  style_tt(i=13:23, j=2, background = "#FFF6E5") |>
+  style_tt(i=6:12, j=2, background = "#FFEBC7") |>
+  style_tt(i=23, j=1, background = "#D1DAFF") |>
+  style_tt(i=15, j=1, background = "#D1DAFF") |>
+  style_tt(i=19, j=1, background = "#D1DAFF")
+```
+
 
 # Discussion and Conclusion
 
