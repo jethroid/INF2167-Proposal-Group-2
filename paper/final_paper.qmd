@@ -163,6 +163,16 @@ newselec |>
 
 # Discussion and Conclusion
 
+## Discussion
+
+Needless to say, that this project did not produce strong evidence of a link between local news decline and turnout in federal elections is not grounds to conclude that the alarming amounts of local media closures in recent decades does not have an effect on the political culture in Canada or is nothing to worry about. Because of time constraints, our project has been limited in scope to our one research question, but turnout is not the only measure of political engagement or political health. Next steps for a project such as this could include the addition of more data and more variables to measure things like polarization and level of discourse. Because of the complexity of working with spatial data across redistricting periods, our merged dataset only includes results from three general elections working with the same electoral boundaries, and does not include data from provincial or municipal elections. We represent here only a fraction of the political landscape of Canada over this period, but our code and dataset serves as a model or template for further efforts to connect Canadian electoral and news data in the future.
+
+Due to similar limitations, our plan to merge additional census data into our dataset was put to the side. As a result, our regression is limited to local news changes as the sole predictor rather than exploring predictors such as income and education levels as would have been the course had time permitted. Whether factors like these or others are confounding variables, obscuring a correlation that is there, or whether there really is little relationship as our model suggests, remains a question worth exploring. The regression may also be improved by a more sophisticated measurement of news change than our simple integer values: our value does not account for differences in population among ridings, for instance, which may inflate the negative numbers of urban ridings, though viewing Tables 2 and 3 above suggests that urban and rural ridings are both represented in the categories of high local news closures and low turnout.
+
+Building on our project with more data and better models can illuminate this question of confounders but also disentangle other factors from turnout--might we see, for example, contrary to expectations, reduced trust in democracy without depressed turnout at the federal elections level? Next steps could include studying differences among political engagement with different levels of government: as mentioned in Section 2, a reduction in local news can increase dependence on national, partisan media, and meanwhile we could even see reduced turnout in municipal elections as predicted by @barber_left_2026 (p. 11).
+
+## Conclusion
+
 \newpage
 
 # References
