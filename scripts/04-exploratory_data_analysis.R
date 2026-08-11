@@ -9,6 +9,7 @@ library(janitor)
 library(tinytable)
 library(scales)
 library(fs)
+library(hrbrthemes)
 
 newselec <- read_csv(here("data", "02-analysis_data", "news_election.csv"))
 withdupes <- read_csv(here("data", "02-analysis_data", "news_election_before_dupe_removal.csv"))
@@ -73,3 +74,26 @@ lowturn |>
 #double check ridings in common, retroactively coloured in above
 
 intersect(newsnames, turnnames)
+
+# examine positive changes, create graph
+
+colours <- c("#008A45", "#CCA500", "#A80084", "#295BFF", "#A30500")
+
+newselec |>
+  filter(election_year == 2021) |>
+  select(fedename, cumulative_news) |>
+  arrange(desc(cumulative_news)) |>
+  slice_head(n=5) |>
+  ggplot(aes(x = reorder(fedename, -cumulative_news), y = cumulative_news, fill = fedename)) +
+  geom_col(show.legend = FALSE) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, size = 10, vjust = 1, face = "bold")) +
+  scale_fill_manual(values = colours) +
+  scale_x_discrete(labels = c("London North Centre" = "London \n North Centre",
+                              "Esquimalt--Saanich--Sooke" = "Esquimalt--\n Saanich--Sooke",
+                              "Scarborough--Guildwood" = "Scarborough--\n Guildwood")) +
+  labs(
+    x = NULL,
+    y = "News Score",
+    caption = "Figure 5.2.1. Ridings with the highest news scores."
+  )

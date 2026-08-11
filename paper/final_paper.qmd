@@ -1,5 +1,5 @@
 ---
-title: "The Demise of Local Journalism and Democratic Health in Canada"
+title: "Relationship Between Turnout in Federal Elections and the Decline in Local Journalism"
 author: 
   - Jet McCullough
   - William Chan
@@ -19,7 +19,7 @@ Local journalism in Canada is experiencing a sharp decline, with 2.5 million Can
 
 **How does the net trajectory of the local news market affect a riding’s voter turnout relative to the national baseline?**
 
-Our hypothesis is that ridings that experience more negative changes in their local news market will have lower voter turnout than the national average. To answer this question, we will use federal election results from Elections Canada and local news outlet data from the Local News Research Project, led by researchers at Toronto Metropolitan University [@lindgren_local_nodate] to conduct a linear regression analysis quantifying the relationship between changes in the local news and voter turnout in Canada. We found that \[add findings…\]
+Our hypothesis is that ridings that experience more negative changes in their local news market will have lower voter turnout than the national average. To test this hypothesis, we use federal election results from Elections Canada and local news outlet data from the Local News Research Project, led by researchers at Toronto Metropolitan University [@lindgren_local_nodate] to conduct a linear regression analysis quantifying the relationship between changes in the local news and voter turnout in Canada. The project outlined below includes the creation of this mixed dataset and  regression model, which form useful first steps to exploring the relationship between local news and electoral results in Canada.
 
 # Relevant Literature
 
@@ -119,7 +119,7 @@ withdupes |>
   style_tt(i=2:5, j=2, background = "#FFC2C2")
 ```
 
-Having the elections and news data in one dataset, we can examine the relationships among these data in different ways. Each riding/election year now has a score which is a measurement of news changes that happened within its boundaries between 2008 and the year in question. Tables 2 and 3 below give us a look at all ridings that have a cumulative score of -5 or lower as of 2021, i.e. those whose local news has been most negatively affected on the whole, alongside an equivalent length list of ridings with the greatest negative difference in turnout from the national average. This comparison would also not seem to provide evidence of a strong connection, though three ridings are in common among these lists, as are highlighted below. 
+Having the elections and news data in one dataset, we can examine the relationships among these data in different ways. Each riding/election year now has a score which is a measurement of news changes that happened within its boundaries between 2008 and the year in question. Tables 2 and 3 below give us a look at all ridings that have a cumulative score of -5 or lower as of 2021, i.e. those whose local news has been most negatively affected on the whole, alongside an equivalent length list of ridings with the greatest negative difference in turnout from the national average. This comparison would also not seem to provide evidence of a strong connection, though three ridings are in common among these lists, as are highlighted below.
 
 Since we have the data on local news at our fingertips, we have the ability to look at the stories these ridings point to. Between the 2019 and 2021 election, Coast of Bays--Central--Notre Dame, for example, saw the closure of "The Central Voice" due to pressures resulting from the pandemic. As the descriptions included in the news data inform us, "The Central Voice" was a free paper that had served central Newfoundland and had itself been the result of a merger of four community papers in the area. Though the riding had relatively low turnout in all three elections for which we have data, the period between the 2019 and 2021 elections did see some sort of shift in the political culture in this riding, as the result shifted from a solid Liberal victory in 2019 to a narrow win for the Conservatives in 2021.
 
@@ -160,6 +160,32 @@ newselec |>
   style_tt(i=19, j=1, background = "#D1DAFF")
 ```
 
+Another area of news changes we have not touched on yet are the ones that we have deemed positive, i.e. new outlets or expansions of existing outlets. With our merged dataset, we can examine the ridings that have had the most positive change overall. As we can see from Figure 5.2.1 below, the highest positive cumulative news score in 2021 was in the riding of Québec. Looking again at our description variable from the Local News Research Project, we see in fact that the high score is a result of multiple "hyperlocal" neighbourhood-oriented web outlets being formed in this period, and a then-new Québec City TV newscast from Noovo TV network. Turnout in this riding stayed in the high sixties and slightly above the national average in all three years we have data for.
+
+```{r}
+#| echo: false
+
+colours <- c("#008A45", "#CCA500", "#A80084", "#295BFF", "#A30500")
+
+newselec |>
+  filter(election_year == 2021) |>
+  select(fedename, cumulative_news) |>
+  arrange(desc(cumulative_news)) |>
+  slice_head(n=5) |>
+  ggplot(aes(x = reorder(fedename, -cumulative_news), y = cumulative_news, fill = fedename)) +
+  geom_col(show.legend = FALSE) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, size = 7, face = "bold")) +
+  scale_fill_manual(values = colours) +
+  scale_x_discrete(labels = c("London North Centre" = "London \n North Centre",
+                              "Esquimalt--Saanich--Sooke" = "Esquimalt\n --Saanich--\n Sooke",
+                              "Scarborough--Guildwood" = "Scarborough\n --Guildwood")) +
+  labs(
+    x = NULL,
+    y = "News Score",
+    caption = "Figure 5.2.1. Ridings with the highest news scores."
+  )
+```
 
 # Discussion and Conclusion
 
@@ -169,7 +195,7 @@ Needless to say, that this project did not produce strong evidence of a link bet
 
 Due to similar limitations, our plan to merge additional census data into our dataset was put to the side. As a result, our regression is limited to local news changes as the sole predictor rather than exploring predictors such as income and education levels as would have been the course had time permitted. Whether factors like these or others are confounding variables, obscuring a correlation that is there, or whether there really is little relationship as our model suggests, remains a question worth exploring. The regression may also be improved by a more sophisticated measurement of news change than our simple integer values: our value does not account for differences in population among ridings, for instance, which may inflate the negative numbers of urban ridings, though viewing Tables 2 and 3 above suggests that urban and rural ridings are both represented in the categories of high local news closures and low turnout.
 
-Building on our project with more data and better models can illuminate this question of confounders but also disentangle other factors from turnout--might we see, for example, contrary to expectations, reduced trust in democracy without depressed turnout at the federal elections level? Next steps could include studying differences among political engagement with different levels of government: as mentioned in Section 2, a reduction in local news can increase dependence on national, partisan media, and meanwhile we could even see reduced turnout in municipal elections as predicted by @barber_left_2026 (p. 11).
+Building on our project with more data and better models can illuminate this question of confounding variables but also disentangle other factors from turnout--might we see, for example, contrary to expectations, reduced trust in democracy without depressed turnout at the federal elections level? Next steps could include studying differences among political engagement with different levels of government: as mentioned in Section 2, a reduction in local news can increase dependence on national, partisan media, and meanwhile we could even see reduced turnout in municipal elections as predicted by @barber_left_2026 (p. 11).
 
 ## Conclusion
 
