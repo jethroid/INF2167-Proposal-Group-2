@@ -42,8 +42,10 @@ The Federal Electoral District Boundary Files are the third dataset we use to me
 To merge the local news and election datasets, we first merge the news data with the boundary file by conducting a spatial join using the Simple Features (sf) package [@simple_features]. Each observation in the news dataset is assigned an electoral district ID from the shapefile if it falls within the corresponding polygon. With the electoral district ID attached, the news dataset can then be merged with the election results using a left join.
 
 To quantify the relationship between voter turnout and changes in local news outlets, we ran the following linear regression model:
+
 $$turnout\_diff_{it} = \beta_0 + \beta_1 \cdot cumulative\_news_{it} + \epsilon_{it}$$
-The outcome variable, $turnout\_diff_{it}$, is the difference between the turnout of a specific riding $i$ in the election year $t$ and the overall national turnout in that same election year. The predictor, $cumulative\_news_{it}$, represents the net running sum of local news changes for a specific riding $i$ up to the date of the election $t$. 
+
+The outcome variable, $turnout\_diff_{it}$, is the difference between the turnout of a specific riding $i$ in the election year $t$ and the overall national turnout in that same election year. The predictor, $cumulative\_news_{it}$, represents the net running sum of local news changes for a specific riding $i$ up to the date of the election $t$. This sum is calculated by assigning an integer value corresponding to the cumulative changes of news in a riding from 2008 to the date of the election in question, where a negative news change ("closed," "shifted to online," "closed due to merger," "decrease in service") counts as -1, a positive change ("new," "increase in service") counts as +1, and relatively neutral changes ("new outlet produced by merger," "daily becomes a community paper") do not affect the total.
 
 # Results and Findings
 
@@ -56,6 +58,7 @@ library(tinytable)
 library(here)
 library(scales)
 library(modelsummary)
+library(hrbrthemes)
 
 withdupes <- read_csv(here("data", "02-analysis_data", "news_election_before_dupe_removal.csv"))
 newselec <- read_csv(here("data", "02-analysis_data", "news_election.csv"))
@@ -64,13 +67,43 @@ newselec <- read_csv(here("data", "02-analysis_data", "news_election.csv"))
 
 ## Regression
 
-```{r}
+Our attempts at fitting a regression model to the data hardly produced overwhelming evidence of a correlation between negative changes to local news outlets and reduced turnout. Our first model, following the formula outlined above, returned a coefficient of -0.001 and an R-Squared value of 0.002. Other models were tried, with variations on the news change and turnout variables:
 
+2) A model that uses changes to news and difference of relative turnout election-by-election (2015-19, 2019-21) rather than cumulative news changes to date and turnout difference in that election year:
+
+$$\Delta turnout\_diff_{it} = \beta_0 + \beta_1 \cdot \Delta news_{it} + \epsilon_{it}$$
+Where $\Delta turnout\_diff_{it}$ is the difference from the previous election year in the value of riding turnout minus national average turnout, and $\Delta news_{it}$ is the change in news from the previous election year, i.e. the cumulative news score minus the previous year's score.
+
+
+3) A model similar to the first attempted one, with cumulative news changes and turnout difference, but where the score of news changes excludes online news sources, and includes only old media. Media type is an element of the local news dataset that we thought may have gone uncaptured by our model. Since the final form of our merged dataset contains observations that are neatly per-riding and per-year, and the media type variable relies on observations that are per-news-change, we attempted to account for media type by changing how the cumulative news integer value is calculated rather than attempting to use it as another predictor in the model.
+
+4) A model similar to 2), looking at election-by-election changes, but where only old media are included as in 3).
+
+None of these models showed much evidence that the news change and turnout variables respectively used were closely correlated, however. The model described in 2) produced the most pronounced slope (-0.003) and the highest R-Squared value (0.017), and is pictured below (Figure 5.1.1). As is apparent, these results cannot be reasonably interpreted as overwhelming evidence of a connection between local news and political outcomes on a national level.
+
+```{r}
+#| echo: false
+#| warning: false
+
+ggplot(data = newselec, 
+       aes(x = change_last, y = turnout_diff_last)) +
+  geom_point(alpha = 0.3, color = "darkgray") +
+  
+  #overlay the regression line with a 95% confidence interval
+  geom_smooth(method = "lm", color = "blue", se = TRUE) +
+  labs(
+    x = "News Change From Previous Election",
+    y = "Turnout Difference",
+    caption = "Figure 5.1.1. News changes from previous election as a predictor of turnout changes."
+  ) +
+  
+  theme_minimal()
 ```
 
 
 ## Merged Dataset
 
+The methods outlined above resulted in a reproducible workflow that results in a dataset that has local news outlet information and elections information in one place, along with the variables added by us. The code for merging datasets based on spatial join is hosted on our Github repository and can be adapted or expanded to include future and past election and news information, or other data that relies on census or geographic divisions. We can now more easily explore the data for the elections and news outlets we have already merged, and use our new variables beyond modeling a regression.  We can use the positive and negative values we assigned to types of news changes, for example, to explore what types of media have seen the greatest number of negative changes, as in Table 1. As we can see, a majority of negative changes were to community papers.
 
 ```{r}
 #| echo: false
@@ -86,7 +119,9 @@ withdupes |>
   style_tt(i=2:5, j=2, background = "#FFC2C2")
 ```
 
+Having the elections and news data in one dataset, we can examine the relationships among these data in different ways. Each riding/election year now has a score which is a measurement of news changes that happened within its boundaries between 2008 and the year in question. Tables 2 and 3 below give us a look at all ridings that have a cumulative score of -5 or lower as of 2021, i.e. those whose local news has been most negatively affected on the whole, alongside an equivalent length list of ridings with the greatest negative difference in turnout from the national average. This comparison would also not seem to provide evidence of a strong connection, though three ridings are in common among these lists, as are highlighted below. 
 
+Since we have the data on local news at our fingertips, we have the ability to look at the stories these ridings point to. Between the 2019 and 2021 election, Coast of Bays--Central--Notre Dame, for example, saw the closure of "The Central Voice" due to pressures resulting from the pandemic. As the descriptions included in the news data inform us, "The Central Voice" was a free paper that had served central Newfoundland and had itself been the result of a merger of four community papers in the area. Though the riding had relatively low turnout in all three elections for which we have data, the period between the 2019 and 2021 elections did see some sort of shift in the political culture in this riding, as the result shifted from a solid Liberal victory in 2019 to a narrow win for the Conservatives in 2021.
 
 ```{r}
 #| layout-ncol: 2
