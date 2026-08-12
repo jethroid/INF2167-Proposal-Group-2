@@ -12,6 +12,8 @@ bibliography: paper_references.bib
 ---
 
 # Abstract
+Local news is important to the health of democracies because it keeps voters informed and holds politicians accountable. Previous research has shown that the decline of local news reduces voters’ knowledge of local candidates and affairs, which can discourage civic engagement in communities. The closure of local news outlets across Canada therefore carries potentially significant political implications, one of which concerns the political participation of the population. To explore and understand the relationship between local journalism and political participation in Canada, we curated a dataset documenting changes in local news outlets and voter turnout across three federal elections and performed a linear regression analysis. The results found no significant relationship between changes in local news outlets and voter turnout. However, this finding by no means suggests that the decline of local news in Canada has no effect on political participation or political culture. Future research can test alternative measures of political participation and benefit from the dataset developed in this study.  
+
 
 # Introduction
 
