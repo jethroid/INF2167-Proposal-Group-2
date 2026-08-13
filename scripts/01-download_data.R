@@ -6,7 +6,6 @@
 library(tidyverse)
 library(here)
 library(readxl)
-library(readr)
 library(fs)
 
 # downloading news data, converting to .csv
