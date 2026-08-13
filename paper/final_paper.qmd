@@ -201,6 +201,8 @@ Building on our project with more data and better models can illuminate this que
 
 ## Conclusion
 
+The project outlined in this paper did not produce a regression model that convincingly explains the relationship between political engagement and changes to local news in Canada. The dataset produced in the course of the project offers promise for exploring this relationship, however, and points to the ridings where these factors may intersect, which have their own individual political stories that are worth exploring. The project forms a starting point for future explorations in the Canadian political and news media space. The code to create this dataset, located in R Script files on our Github repository, can be executed independently, and added to and repurposed to add geographical data for other configurations of political boundaries besides the 2013 map, census data with potentially explanatory variables such as income and education, electoral results for provincial and municipal elections, and future local news changes. Future researchers will be able to expand the pool of connected data to draw from by similar means and explore the relationship between local news and political engagement in a more sophisticated and perhaps conclusive way.
+
 \newpage
 
 # References
