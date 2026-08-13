@@ -92,6 +92,9 @@ newselec <- newselec |>
     mutate(cumulative_news_old = sum(type_val_old[change_date <= election_date], na.rm = TRUE)) |>
   ungroup() |>
   
+  # writing version with dupes as we use it in final results
+  write_csv(here("data", "02-analysis_data", "news_election_before_dupe_removal.csv")) |>
+  
   # remove duplicated riding rows
   distinct(fed_code, election_year, .keep_all = TRUE)
 
